@@ -138,7 +138,7 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
 
   glm::mat4 trans = glm::mat4(1.0f);
   trans = glm::translate(
-      trans, glm::vec3(std::fmod(frame / 30.f, 2.0f) - 1.f, 0.0, 0.0f));
+      trans, glm::vec3(std::fmod(frame / 60.f, 2.0f) - 1.f, 0.0, 0.0f));
 
   gShader->setMat4("transform", trans);
 
