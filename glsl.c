@@ -142,10 +142,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	if (argc - optind != 1) {
-		usage(argv[0]);
-		return -1;
-	}
+	// if (argc - optind != 1) {
+	// 	usage(argv[0]);
+	// 	return -1;
+	// }
 	shadertoy = argv[optind];
 
 	if (atomic) {
