@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(kms-glsl)
 
+set(CMAKE_CXX_STANDARD 20)
+
+
 # ---- Install CPM ----
 
 set(CPM_DOWNLOAD_VERSION 0.34.0)
