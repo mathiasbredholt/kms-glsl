@@ -24,6 +24,11 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #ifndef GL_ES_VERSION_2_0
 #include <GLES2/gl2.h>
 #endif
@@ -178,5 +183,9 @@ void dump_perfcntrs(unsigned nframes, uint64_t elapsed_time_ns);
 #define MSEC_PER_SEC INT64_C(1000)
 
 uint64_t get_time_ns(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _COMMON_H */
