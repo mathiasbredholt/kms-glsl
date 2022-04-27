@@ -132,24 +132,21 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
   // // glUniform1f(iTime, (float) frame / 60.0f);
   // glUniform1ui(iFrame, frame);
 
-  start_perfcntrs();
-
-  // glDrawArrays(GL_TRIANGLES, 0, 6);
-
   glm::mat4 trans = glm::mat4(1.0f);
   trans = glm::translate(
       trans, glm::vec3(std::fmod(frame / 60.f, 2.0f) - 1.f, 0.0, 0.0f));
 
   gShader->setMat4("transform", trans);
 
-  // glClearColor(0.f, 0.f, 0.f, 0.f);
-  glClear(GL_COLOR_BUFFER_BIT);
+  start_perfcntrs();
+
   glDrawArrays(GL_LINE_STRIP, 0, gVertexCount);
 
   end_perfcntrs();
 }
 
-extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
+extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
+                              const char *file) {
   int ret;
 
   gShader = new Shader{"shaders/geomVertexShader.glsl",
