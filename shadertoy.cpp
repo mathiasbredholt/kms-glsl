@@ -127,8 +127,8 @@ static void draw_shadertoy(uint64_t start_time, unsigned frame) {
 int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
 	int ret;
 
-	Shader mGeomShader{SHADER_PATH "/geomVertexShader.glsl",
-	                   SHADER_PATH "/geomFragmentShader.glsl"};
+	Shader mGeomShader{"shaders/geomVertexShader.glsl",
+	                   "shaders/geomFragmentShader.glsl"};
 
 	float width = WIDTH, height = HEIGHT;
 	std::vector<float> mVertices;
