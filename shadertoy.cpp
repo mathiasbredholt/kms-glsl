@@ -98,52 +98,72 @@ static char *load_shader(const char *file) {
 }
 
 static void draw_shadertoy(uint64_t start_time, unsigned frame) {
-	glUniform1f(iTime, (get_time_ns() - start_time) / (double) NSEC_PER_SEC);
-	// Replace the above to input ellapsed time relative to 60 FPS
-	// glUniform1f(iTime, (float) frame / 60.0f);
-	glUniform1ui(iFrame, frame);
+	// glUniform1f(iTime, (get_time_ns() - start_time) / (double) NSEC_PER_SEC);
+	// // Replace the above to input ellapsed time relative to 60 FPS
+	// // glUniform1f(iTime, (float) frame / 60.0f);
+	// glUniform1ui(iFrame, frame);
 
 	start_perfcntrs();
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	// glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(std::fmod(frame / 30.f, 2.0f) - 1.f, 0.0, 0.0f));
+
+	mGeomShader.setMat4("transform", trans);
+
+	// glClearColor(0.f, 0.f, 0.f, 0.f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glDrawArrays(GL_LINE_STRIP, 0, vertexCount);
+
 
 	end_perfcntrs();
 }
 
 int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
 	int ret;
-	char *shadertoy_fs;
-	GLuint program, vbo;
-	GLint iResolution;
 
-	shadertoy_fs = load_shader(file);
+	Shader mGeomShader{SHADER_PATH "/geomVertexShader.glsl",
+	                   SHADER_PATH "/geomFragmentShader.glsl"};
 
-	ret = create_program(shadertoy_vs, shadertoy_fs);
-	if (ret < 0) {
-		printf("failed to create program\n");
-		return -1;
-	}
+	float width = WIDTH, height = HEIGHT;
+	std::vector<float> mVertices;
 
-	program = ret;
+	unsigned int VAO;
+	unsigned int VBO;
 
-	ret = link_program(program);
-	if (ret) {
-		printf("failed to link program\n");
-		return -1;
-	}
+	glm::mat4 mProjectionMatrix;
 
-	glViewport(0, 0, gbm->width, gbm->height);
-	glUseProgram(program);
-	iTime = glGetUniformLocation(program, "iTime");
-	iFrame = glGetUniformLocation(program, "iFrame");
-	iResolution = glGetUniformLocation(program, "iResolution");
-	glUniform3f(iResolution, gbm->width, gbm->height, 0);
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), 0, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices[0]);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid *) (intptr_t) 0);
+	glViewport(0, 0, WIDTH, HEIGHT);
+
+	mProjectionMatrix = glm::ortho(0.0f, width, 0.0f, height);
+	mGeomShader.use();
+	mGeomShader.setMat4("projection", mProjectionMatrix);
+	mGeomShader.setVec2("viewportSize", {width, height});
+	// mGeomShader.setFloat("lineWidth", 40.0);
+
+	glEnable(GL_DEPTH_TEST);
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	float t = 0.0f;
+	float x = WIDTH * 0.5f;
+	mVertices.insert(mVertices.end(), {x, 0.f});
+	mVertices.insert(mVertices.end(), {x, HEIGHT});
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(*mVertices.data()),
+	             mVertices.data(), GL_STREAM_DRAW);
+
+	int vertexCount = mVertices.size() / 2;
+	mVertices.clear();
 
 	egl->draw = draw_shadertoy;
 
