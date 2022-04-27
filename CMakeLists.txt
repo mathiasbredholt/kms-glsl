@@ -26,8 +26,7 @@ endif()
 
 include(${CPM_DOWNLOAD_LOCATION})
 
-
-CPMAddPackage("https://github.com/g-truc/glm/releases/download/0.9.9.8/glm-0.9.9.8.zip")
+CPMAddPackage("gh:g-truc/glm#0.9.9.8")
 
 add_executable(kms-glsl common.c drm-atomic.c drm-common.c drm-legacy.c glsl.c perfcntrs.c shadertoy.cpp)
 target_link_libraries(kms-glsl GLESv2 EGL drm gbm glm)
