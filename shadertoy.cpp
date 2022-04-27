@@ -139,7 +139,7 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
 	std::vector<float> mVertices;
   for (int i = 0; i < 256; ++i) {
   	float x = i / 256. * width;
-    float y = (std::sin(3.14 * 32 * i + frame * 0.01) * 0.5 + 0.5) * height;
+    float y = (std::sin(3.14 * 32 * i + frame * 0.04) * 0.5 + 0.5) * height;
     mVertices.insert(mVertices.end(), {x, y});
   }
 
@@ -185,6 +185,7 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
   gShader->setVec2("viewportSize", {width, height});
   // gShader->setFloat("lineWidth", 40.0);
 
+  glLineWidth(4.0)
   glEnable(GL_DEPTH_TEST);
 
   glGenVertexArrays(1, &VAO);
