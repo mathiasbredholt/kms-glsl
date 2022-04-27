@@ -6,7 +6,6 @@ layout(location = 0) in vec2 aPos;
 out vec3 fColor;
 
 uniform mat4 projection;
-uniform mat4 transform;
 uniform vec2 viewportSize;
 
 vec3 rgb2hsv(vec3 c) {
@@ -26,6 +25,6 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-  gl_Position = transform * projection * vec4(aPos, 0.0, 1.0);
+  gl_Position = projection * vec4(aPos, 0.0, 1.0);
   fColor = hsv2rgb(vec3(0.5 + 0.2 * aPos.y, 1.0, 1.0));
 }

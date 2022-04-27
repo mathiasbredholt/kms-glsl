@@ -47,6 +47,8 @@ GLint iTime, iFrame;
 Shader *gShader;
 int gVertexCount;
 
+float width, height;
+
 static const char *shadertoy_vs =
     "attribute vec3 position;                \n"
     "void main()                             \n"
@@ -132,11 +134,24 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
   // // glUniform1f(iTime, (float) frame / 60.0f);
   // glUniform1ui(iFrame, frame);
 
-  glm::mat4 trans = glm::mat4(1.0f);
-  trans = glm::translate(
-      trans, glm::vec3(std::fmod(frame / 60.f, 2.0f) - 1.f, 0.0, 0.0f));
+  float x = width * 0.5f;
+  for (int i = 0; i < 256; ++i) {
+    float y = (std::sin(3.14 * 2 * i + frame * 0.1) + 0.5 * 0.5) * height;
+    mVertices.insert(mVertices.end(), {x, y});
+  }
 
-  gShader->setMat4("transform", trans);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(*mVertices.data()),
+               mVertices.data(), GL_STREAM_DRAW);
+
+  gVertexCount = mVertices.size() / 2;
+  mVertices.clear();
+
+  // glm::mat4 trans = glm::mat4(1.0f);
+  // trans = glm::translate(
+      // trans, glm::vec3(std::fmod(frame / 60.f, 2.0f) - 1.f, 0.0, 0.0f));
+
+  // gShader->setMat4("transform", trans);
 
   start_perfcntrs();
 
@@ -155,7 +170,8 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
   gShader = new Shader{"shaders/geomVertexShader.glsl",
                        "shaders/geomFragmentShader.glsl"};
 
-  float width = gbm->width, height = gbm->height;
+  width = gbm->width;
+  height = gbm->height;
   std::vector<float> mVertices;
 
   unsigned int VAO;
@@ -181,18 +197,6 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
 
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
-
-  float t = 0.0f;
-  float x = width * 0.5f;
-  mVertices.insert(mVertices.end(), {x, 0.f});
-  mVertices.insert(mVertices.end(), {x, height});
-
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(*mVertices.data()),
-               mVertices.data(), GL_STREAM_DRAW);
-
-  gVertexCount = mVertices.size() / 2;
-  mVertices.clear();
 
   egl->draw = draw_shadertoy;
 
