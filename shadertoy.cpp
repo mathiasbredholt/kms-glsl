@@ -185,7 +185,7 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
   gShader->setVec2("viewportSize", {width, height});
   // gShader->setFloat("lineWidth", 40.0);
 
-  glLineWidth(4.0)
+  glLineWidth(4.0);
   glEnable(GL_DEPTH_TEST);
 
   glGenVertexArrays(1, &VAO);
