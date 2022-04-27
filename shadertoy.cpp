@@ -36,6 +36,10 @@
 
 #include <GLES3/gl3.h>
 
+#include <glm/glm.hpp>
+#include <vector>
+#include "Shader.hpp"
+
 #include "common.h"
 
 GLint iTime, iFrame;
@@ -76,26 +80,26 @@ static const GLfloat vertices[] = {
 		1.0f, 1.0f,
 };
 
-static char *load_shader(const char *file) {
-	struct stat statbuf;
-	char *frag;
-	int fd, ret;
+// static char *load_shader(const char *file) {
+// 	struct stat statbuf;
+// 	char *frag;
+// 	int fd, ret;
 
-	fd = open(file, 0);
-	if (fd < 0) {
-		err(fd, "could not open '%s'", file);
-	}
+// 	fd = open(file, 0);
+// 	if (fd < 0) {
+// 		err(fd, "could not open '%s'", file);
+// 	}
 
-	ret = fstat(fd, &statbuf);
-	if (ret < 0) {
-		err(ret, "could not stat '%s'", file);
-	}
+// 	ret = fstat(fd, &statbuf);
+// 	if (ret < 0) {
+// 		err(ret, "could not stat '%s'", file);
+// 	}
 
-	const char *text = mmap(NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-	asprintf(&frag, shadertoy_fs_tmpl, text);
+// 	const char *text = mmap(NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+// 	asprintf(&frag, shadertoy_fs_tmpl, text);
 
-	return frag;
-}
+// 	return frag;
+// }
 
 static void draw_shadertoy(uint64_t start_time, unsigned frame) {
 	// glUniform1f(iTime, (get_time_ns() - start_time) / (double) NSEC_PER_SEC);
