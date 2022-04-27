@@ -44,6 +44,7 @@
 GLint iTime, iFrame;
 
 Shader *gShader;
+int gVertexCount;
 
 static const char *shadertoy_vs =
     "attribute vec3 position;                \n"
@@ -142,7 +143,7 @@ static void draw_shadertoy(uint64_t start_time, unsigned frame) {
 
   // glClearColor(0.f, 0.f, 0.f, 0.f);
   glClear(GL_COLOR_BUFFER_BIT);
-  glDrawArrays(GL_LINE_STRIP, 0, vertexCount);
+  glDrawArrays(GL_LINE_STRIP, 0, gVertexCount);
 
   end_perfcntrs();
 }
@@ -189,7 +190,7 @@ int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
   glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(*mVertices.data()),
                mVertices.data(), GL_STREAM_DRAW);
 
-  int vertexCount = mVertices.size() / 2;
+  gVertexCount = mVertices.size() / 2;
   mVertices.clear();
 
   egl->draw = draw_shadertoy;
