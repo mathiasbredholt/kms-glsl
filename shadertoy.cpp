@@ -139,7 +139,7 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
 	std::vector<float> mVertices;
   for (int i = 0; i < 256; ++i) {
   	float x = i / 256. * width;
-    float y = (std::sin(3.14 * 8 * i + frame * 0.01) + 0.5 * 0.5) * height;
+    float y = (std::sin(3.14 * 8 * i + frame * 0.01) * 0.5 + 0.5) * height;
     mVertices.insert(mVertices.end(), {x, y});
   }
 
