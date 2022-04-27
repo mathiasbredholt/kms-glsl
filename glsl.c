@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
 		init_perfcntrs(egl, perfcntr);
 	}
 
-	glClearColor(0.5, 0.5, 0.5, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	return drm->run(gbm, egl);
