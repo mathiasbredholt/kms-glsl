@@ -140,6 +140,9 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
 
   start_perfcntrs();
 
+  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT);
+
   glDrawArrays(GL_LINE_STRIP, 0, gVertexCount);
 
   end_perfcntrs();
