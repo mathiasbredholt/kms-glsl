@@ -130,7 +130,7 @@ int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
 	Shader mGeomShader{"shaders/geomVertexShader.glsl",
 	                   "shaders/geomFragmentShader.glsl"};
 
-	float width = WIDTH, height = HEIGHT;
+	float width = gbm->width, height = gbm->height;
 	std::vector<float> mVertices;
 
 	unsigned int VAO;
