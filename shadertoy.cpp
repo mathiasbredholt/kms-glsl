@@ -48,6 +48,8 @@ Shader *gShader;
 int gVertexCount;
 
 float width, height;
+unsigned int VAO;
+unsigned int VBO;
 
 static const char *shadertoy_vs =
     "attribute vec3 position;                \n"
@@ -172,9 +174,6 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
 
   width = gbm->width;
   height = gbm->height;
-
-  unsigned int VAO;
-  unsigned int VBO;
 
   glm::mat4 mProjectionMatrix;
 
