@@ -137,8 +137,8 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
   // glUniform1ui(iFrame, frame);
 
 	std::vector<float> mVertices;
-  float x = width * 0.5f;
   for (int i = 0; i < 256; ++i) {
+  	float x = i / 256. * width;
     float y = (std::sin(3.14 * 2 * i + frame * 0.1) + 0.5 * 0.5) * height;
     mVertices.insert(mVertices.end(), {x, y});
   }
