@@ -134,6 +134,7 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
   // // glUniform1f(iTime, (float) frame / 60.0f);
   // glUniform1ui(iFrame, frame);
 
+	std::vector<float> mVertices;
   float x = width * 0.5f;
   for (int i = 0; i < 256; ++i) {
     float y = (std::sin(3.14 * 2 * i + frame * 0.1) + 0.5 * 0.5) * height;
@@ -145,7 +146,6 @@ extern "C" void draw_shadertoy(uint64_t start_time, unsigned frame) {
                mVertices.data(), GL_STREAM_DRAW);
 
   gVertexCount = mVertices.size() / 2;
-  mVertices.clear();
 
   // glm::mat4 trans = glm::mat4(1.0f);
   // trans = glm::translate(
@@ -172,7 +172,6 @@ extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl,
 
   width = gbm->width;
   height = gbm->height;
-  std::vector<float> mVertices;
 
   unsigned int VAO;
   unsigned int VBO;
