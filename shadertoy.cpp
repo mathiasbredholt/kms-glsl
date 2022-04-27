@@ -161,7 +161,7 @@ int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
 
   glm::mat4 mProjectionMatrix;
 
-  glViewport(0, 0, WIDTH, HEIGHT);
+  glViewport(0, 0, width, height);
 
   mProjectionMatrix = glm::ortho(0.0f, width, 0.0f, height);
   gShader->use();
@@ -181,9 +181,9 @@ int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
   glEnableVertexAttribArray(0);
 
   float t = 0.0f;
-  float x = WIDTH * 0.5f;
+  float x = width * 0.5f;
   mVertices.insert(mVertices.end(), {x, 0.f});
-  mVertices.insert(mVertices.end(), {x, HEIGHT});
+  mVertices.insert(mVertices.end(), {x, height});
 
   glBindBuffer(GL_ARRAY_BUFFER, VBO);
   glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(*mVertices.data()),
