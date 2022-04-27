@@ -126,7 +126,7 @@ static const GLfloat vertices[] = {
 // 	return frag;
 // }
 
-static void draw_shadertoy(uint64_t start_time, unsigned frame) {
+extern "C" static void draw_shadertoy(uint64_t start_time, unsigned frame) {
   // glUniform1f(iTime, (get_time_ns() - start_time) / (double) NSEC_PER_SEC);
   // // Replace the above to input ellapsed time relative to 60 FPS
   // // glUniform1f(iTime, (float) frame / 60.0f);
@@ -149,7 +149,7 @@ static void draw_shadertoy(uint64_t start_time, unsigned frame) {
   end_perfcntrs();
 }
 
-int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
+extern "C" int init_shadertoy(const struct gbm *gbm, struct egl *egl, const char *file) {
   int ret;
 
   gShader = new Shader{"shaders/geomVertexShader.glsl",
